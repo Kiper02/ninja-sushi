@@ -3,6 +3,7 @@ import BasketProduct from "./BasketProduct.js";
 import Composition from "./Composition.js";
 import Order from "./Order.js";
 import Product from "./Product.js";
+import Token from "./Token.js";
 import Type from "./Type.js";
 import User from "./User.js";
 import UserInfo from "./UserInfo.js";
@@ -14,6 +15,9 @@ UserInfo.belongsTo(User);
 
 User.hasOne(Basket);
 Basket.belongsTo(User);
+
+User.hasOne(Token);
+Token.belongsTo(User);
 
 Basket.hasMany(BasketProduct);
 BasketProduct.belongsTo(Basket);
@@ -36,6 +40,7 @@ Order.belongsTo(Basket);
 export {
     User,
     Basket,
+    Token,
     Composition,
     BasketProduct,
     Order,
