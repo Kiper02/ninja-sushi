@@ -4,8 +4,10 @@ import sequelize from "../db.js";
 
 const User = sequelize.define('User', {
     id: {type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true},
-    number_phone: {type: DataTypes.INTEGER, allowNull: false},
-    role: {type: DataTypes.ARRAY, allowNull: false, defaultValue: ['User']}
+    email: {type: DataTypes.STRING, allowNull: false},
+    role: {type: DataTypes.JSON, allowNull: false, defaultValue: ['User']},
+    isActivated: {type: DataTypes.BOOLEAN, defaultValue: false},
+    activationLink: {type: DataTypes.STRING}
 })
 
 export default User;
