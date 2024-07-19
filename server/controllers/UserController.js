@@ -1,4 +1,4 @@
-import UserService from "../services/UserService";
+import UserService from "../services/UserService.js";
 
 class UserController {
     async registration(req, res, next) {
@@ -39,7 +39,7 @@ class UserController {
 
     async refresh(req, res, next) {
         try {
-            
+            return res.json({message: "success"})
         } catch (error) {
             next(error)
         }

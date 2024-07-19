@@ -1,13 +1,14 @@
 import { Router } from "express";
+import UserController from "../controllers/UserController.js";
 
 const router = Router()
 
 
-router.post('/registration');
-router.post('/login');
-router.post('/logout');
-router.get('/activate/:link');
-router.get('/refresh');
+router.post('/registration', UserController.registration);
+router.post('/login', UserController.login);
+router.post('/logout', UserController.logout);
+router.get('/activate/:link', UserController.activate);
+router.get('/refresh', UserController.refresh);
 
 
 export default router;
