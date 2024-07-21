@@ -1,7 +1,9 @@
+import OrderService from "../services/OrderService.js";
+
 class OrderController {
     async create(req, res, next) {
         try {
-            
+            const data = await OrderService.create(req.body);
         } catch (error) {
             next(error)
         }
