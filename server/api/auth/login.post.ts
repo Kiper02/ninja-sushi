@@ -3,6 +3,7 @@ import { defineEventHandler } from 'h3';
 import {loginSchema} from "#shared/validation/user.validation";
 import { verify } from 'argon2'
 import redisService from "#shared/services/redis.service";
+import {saveSession} from "#shared/utils/session.util";
 
 export default defineEventHandler(async (event) => {
     const result = await readValidatedBody(event, body => loginSchema.safeParse(body));
@@ -32,6 +33,7 @@ export default defineEventHandler(async (event) => {
         })
     }
 
-    await redisService.saveSession(existingUser.id);
+    await redisService.saveSession(existingUser);
+    saveSession(event, existingUser);
     return true;
 })

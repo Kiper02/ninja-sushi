@@ -1,6 +1,16 @@
+<script lang="ts" setup>
+import {Toaster} from "vue-sonner";
+</script>
+
 <template>
   <div>
-    <NuxtRouteAnnouncer />
-    <NuxtWelcome />
+    <Toaster />
+
+    <NuxtLayout>
+      <NuxtPage />
+    </NuxtLayout>
+    <ClientOnly>
+      <Toaster />
+    </ClientOnly>
   </div>
 </template>

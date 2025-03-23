@@ -5,12 +5,20 @@ export default defineNuxtConfig({
     '@nuxtjs/tailwindcss',
     'shadcn-nuxt',
     '@prisma/nuxt',
+    '@nuxtjs/color-mode',
+    [
+      '@vee-validate/nuxt',
+      {
+        autoImports: true,
+      },
+    ],
     ['@nuxtjs/google-fonts', {
       families: {
         Roboto: true,
         Inter: [400, 500, 700],
       }
     }],
+    '@nuxt/image'
   ],
   shadcn: {
     prefix: 'Ui',
@@ -22,9 +30,12 @@ export default defineNuxtConfig({
         driver: "redis",
         host: process.env.REDIS_HOST,
         port: process.env.REDIS_PORT,
-        password: process.env.REDIS_PASSWORD,
+        // password: process.env.REDIS_PASSWORD,
         db: 0,
       },
     },
   },
+  colorMode: {
+    classSuffix: ''
+  }
 })
