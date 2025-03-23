@@ -20,5 +20,3 @@ export function deleteSession(event: any, user: User): boolean {
 
     return true;
 }
-
-// git commit -m 'Реализация авторизации и регистрации. Подключил vee-validate. Сохранение сессии '
