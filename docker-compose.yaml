@@ -1,0 +1,38 @@
+version: latest
+
+services:
+  db:
+    container_name: ninja-db
+    image: mysql:8.0
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      - MYSQL_USER=${DB_USER}
+      - MYSQL_PASSWORD=${DB_PASSWORD}
+      - MYSQL_DATABASE=${DB_NAME}
+      - MYSQL_HOST=${DB_HOST}
+      - MYSQL_ROOT_PASSWORD=${DB_ROOT_PASSWORD}
+    ports:
+      - 3308:3306
+    volumes:
+      - mysql_data:/var/lib/mysql
+    restart: always
+    networks:
+      - ninja-sushi-backend
+  redis:
+    container_name: redis
+    image: redis:5.0
+    restart: always
+    ports:
+      - 6380:6379
+    command: redis-server --requirepass ${REDIS_PASSWORD}
+    volumes:
+      - redis_data:/data
+    networks:
+      - ninja-sushi-backend
+
+volumes:
+  mysql_data:
+  redis_data:
+
+networks:
+  ninja-sushi-backend:
