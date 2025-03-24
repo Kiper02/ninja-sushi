@@ -18,6 +18,7 @@ services:
     restart: always
     networks:
       - ninja-sushi-backend
+
   redis:
     container_name: redis
     image: redis:5.0
@@ -29,6 +30,7 @@ services:
       - redis_data:/data
     networks:
       - ninja-sushi-backend
+
   zookeeper:
     container_name: zookeeper
     image: zookeeper:3.8
@@ -45,7 +47,7 @@ services:
 
   kafka:
     container_name: kafka
-    image: apache/kafka:latest
+    image: confluentinc/cp-kafka:7.0.1
     restart: always
     ports:
       - ${KAFKA_PORT}:9092
