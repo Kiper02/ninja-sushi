@@ -2,6 +2,7 @@
   useSeoMeta({
     title: 'Home | Ninja Sushi'
   })
+
 </script>
 
 <template>

@@ -1,7 +1,8 @@
-export interface IProducerMessage {
-    message: IMessage[];
+export enum EnumTopics {
+    PAYMENT = 'payments-events-topic'
 }
 
-interface IMessage {
-    value: string;
+
+export enum EnumKeys {
+    PAYMENT = 'payment'
 }

@@ -6,6 +6,7 @@ export default defineNuxtConfig({
     'shadcn-nuxt',
     '@prisma/nuxt',
     '@nuxtjs/color-mode',
+    '@pinia/nuxt',
     [
       '@vee-validate/nuxt',
       {
