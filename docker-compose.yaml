@@ -31,42 +31,73 @@ services:
     networks:
       - ninja-sushi-backend
 
-  zookeeper:
-    container_name: zookeeper
-    image: zookeeper:3.8
-    restart: always
+  kafka-1:
+    container_name: kafka-1
+    image: bitnami/kafka:latest
     ports:
-      - ${ZOOKEEPER_PORT}:2181
+      - "9092:9092"
     environment:
-      ZOO_MY_ID: ${ZOO_MY_ID}
-      ZOO_SERVERS: ${ZOO_SERVERS}
+      - KAFKA_CFG_NODE_ID=1
+      - KAFKA_KRAFT_CLUSTER_ID=c6dadce4-401d-44ee-85f5-b9d19023dd2e
+      - KAFKA_CFG_PROCESS_ROLES=controller,broker
+      - KAFKA_CFG_LISTENERS=PLAINTEXT://:9090,CONTROLLER://:9091,EXTERNAL://:9092
+      - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://kafka-1:9090,EXTERNAL://localhost:9092
+      - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT,EXTERNAL:PLAINTEXT
+      - KAFKA_CFG_CONTROLLER_QUORUM_VOTERS=1@kafka-1:9091,2@kafka-2:9091,3@kafka-3:9091
+      - KAFKA_CFG_CONTROLLER_LISTENER_NAMES=CONTROLLER
+      - KAFKA_CFG_INTER_BROKER_LISTENER_NAME=PLAINTEXT
+      - ALLOW_PLAINTEXT_LISTENER=yes
     volumes:
-      - zookeeper_data:/data
+      - kafka_server_1_data:/bitnami/kafka
     networks:
       - ninja-sushi-backend
-
-  kafka:
-    container_name: kafka
-    image: confluentinc/cp-kafka:7.0.1
-    restart: always
+  kafka-2:
+    container_name: kafka-2
+    image: bitnami/kafka:latest
     ports:
-      - ${KAFKA_PORT}:9092
+      - "9094:9094"
     environment:
-      KAFKA_ZOOKEEPER_CONNECT: zookeeper:${ZOOKEEPER_PORT}
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://${KAFKA_HOST}:${KAFKA_PORT}
-      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: ${KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR}
+      - KAFKA_CFG_NODE_ID=2
+      - KAFKA_KRAFT_CLUSTER_ID=c6dadce4-401d-44ee-85f5-b9d19023dd2e
+      - KAFKA_CFG_PROCESS_ROLES=controller,broker
+      - KAFKA_CFG_LISTENERS=PLAINTEXT://:9090,CONTROLLER://:9091,EXTERNAL://:9094
+      - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://kafka-2:9090,EXTERNAL://localhost:9094
+      - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT,EXTERNAL:PLAINTEXT
+      - KAFKA_CFG_CONTROLLER_QUORUM_VOTERS=1@kafka-1:9091,2@kafka-2:9091,3@kafka-3:9091
+      - KAFKA_CFG_CONTROLLER_LISTENER_NAMES=CONTROLLER
+      - KAFKA_CFG_INTER_BROKER_LISTENER_NAME=PLAINTEXT
+      - ALLOW_PLAINTEXT_LISTENER=yes
     volumes:
-      - kafka_data:/var/lib/kafka/data
-    depends_on:
-      - zookeeper
+      - kafka_server_2_data:/bitnami/kafka
+    networks:
+      - ninja-sushi-backend
+  kafka-3:
+    container_name: kafka-3
+    image: bitnami/kafka:latest
+    ports:
+      - "9096:9096"
+    environment:
+      - KAFKA_CFG_NODE_ID=3
+      - KAFKA_KRAFT_CLUSTER_ID=c6dadce4-401d-44ee-85f5-b9d19023dd2e
+      - KAFKA_CFG_PROCESS_ROLES=controller,broker
+      - KAFKA_CFG_LISTENERS=PLAINTEXT://:9090,CONTROLLER://:9091,EXTERNAL://:9096
+      - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://kafka-3:9090,EXTERNAL://localhost:9096
+      - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT,EXTERNAL:PLAINTEXT
+      - KAFKA_CFG_CONTROLLER_QUORUM_VOTERS=1@kafka-1:9091,2@kafka-2:9091,3@kafka-3:9091
+      - KAFKA_CFG_CONTROLLER_LISTENER_NAMES=CONTROLLER
+      - KAFKA_CFG_INTER_BROKER_LISTENER_NAME=PLAINTEXT
+      - ALLOW_PLAINTEXT_LISTENER=yes
+    volumes:
+      - kafka_server_3_data:/bitnami/kafka
     networks:
       - ninja-sushi-backend
 
 volumes:
   mysql_data:
   redis_data:
-  zookeeper_data:
-  kafka_data:
+  kafka_server_1_data:
+  kafka_server_2_data:
+  kafka_server_3_data:
 
 networks:
   ninja-sushi-backend:

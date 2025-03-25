@@ -3,7 +3,7 @@ import { Kafka } from 'kafkajs';
 export default defineNuxtPlugin(async (nuxtApp) => {
     const kafka = new Kafka({
         clientId: 'ninja-sushi',
-        brokers: [`${process.env.KAFKA_HOST}:${process.env.KAFKA_PORT}`],
+        brokers: [`PLAINTEXT://kafka:29092`],
     });
 
     const producer = kafka.producer();
