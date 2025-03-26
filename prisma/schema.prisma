@@ -7,6 +7,16 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum WeightUnit {
+  KG
+  G
+}
+
+enum VolumeUnit {
+  ML
+  L
+}
+
 model User {
   id       String @id @default(ulid())
   email    String @unique
@@ -18,4 +28,107 @@ model User {
   updatedAt DateTime @updatedAt @map("updated_at")
 
   @@map("users")
+}
+
+model Category {
+  id String @id @default(ulid())
+
+  name String @unique
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("categories")
+}
+
+model Product {
+  id String @id @default(ulid())
+
+  name       String
+  price      Float
+  weight     Float?
+  weightUnit WeightUnit?
+  volume     Float?
+  volumeUnit VolumeUnit?
+  image      String?
+
+  isSpicy      Boolean @default(false) @map("is_spicy")
+  isVegetarian Boolean @default(false) @map("is_vegetarian")
+  isLactose    Boolean @default(true) @map("is_lactose")
+  isHit        Boolean @default(false) @map("is_hit")
+
+  productType   ProductType @relation(fields: [productTypeId], references: [id])
+  productTypeId String      @map("product_type_id")
+
+  ingredients ProductIngredient[]
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("products")
+}
+
+model ProductIngredient {
+  id String @id @default(ulid())
+
+  product   Product @relation(fields: [productId], references: [id])
+  productId String  @map("product_id")
+
+  component   ProductComponents @relation(fields: [componentId], references: [id])
+  componentId String            @map("component_id")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("product_ingredients")
+}
+
+model ProductComponents {
+  id String @id @default(ulid())
+
+  name String
+
+  products ProductIngredient[]
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("product_components")
+}
+
+model ProductType {
+  id String @id @default(ulid())
+
+  name String
+
+  Products       Product[]
+  ProductSubType ProductSubType[]
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("product_types")
+}
+
+model ProductSubType {
+  id String @id @default(ulid())
+
+  name String
+
+  product       ProductType @relation(fields: [productTypeId], references: [id])
+  productTypeId String      @map("product_type_id")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("product_subtypes")
+}
+
+model ProductImage {
+  id String @id @default(ulid())
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("product_images")
 }
