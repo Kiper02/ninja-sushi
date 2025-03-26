@@ -17,12 +17,18 @@ enum VolumeUnit {
   L
 }
 
+enum UserRoles {
+  USER
+  ADMIN
+}
+
 model User {
-  id       String @id @default(ulid())
-  email    String @unique
-  phone    String @unique
+  id       String    @id @default(ulid())
+  email    String    @unique
+  phone    String    @unique
   name     String
   password String
+  role     UserRoles @default(USER)
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
@@ -50,7 +56,6 @@ model Product {
   weightUnit WeightUnit?
   volume     Float?
   volumeUnit VolumeUnit?
-  image      String?
 
   isSpicy      Boolean @default(false) @map("is_spicy")
   isVegetarian Boolean @default(false) @map("is_vegetarian")
@@ -61,11 +66,28 @@ model Product {
   productTypeId String      @map("product_type_id")
 
   ingredients ProductIngredient[]
+  images      ProductImage[]
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
   @@map("products")
+}
+
+model ProductImage {
+  id String @id @default(ulid())
+
+  path   String
+  isMain Boolean @default(false)
+
+  product   Product @relation(fields: [productId], references: [id])
+  productId String  @map("product_id")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@unique([productId, isMain], name: "only_one_main_image_per_product")
+  @@map("product_images")
 }
 
 model ProductIngredient {
@@ -122,13 +144,4 @@ model ProductSubType {
   updatedAt DateTime @updatedAt @map("updated_at")
 
   @@map("product_subtypes")
-}
-
-model ProductImage {
-  id String @id @default(ulid())
-
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
-
-  @@map("product_images")
 }
