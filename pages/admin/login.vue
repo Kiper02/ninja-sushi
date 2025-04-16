@@ -4,25 +4,10 @@ import Logo from "~/components/shared/logo.vue";
 import {useAuthStore, useIsLoadingStore} from "#shared/store/auth.store";
 
 const isLoadingStore = useIsLoadingStore();
-const {push} = useRouter();
 
-onMounted(async() => {
-  isLoadingStore.set(true);
-  try {
-    const response: any = await fetch('/api/profile', {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      }
-    });
-    const user = await response.json();
-    if(user.role !== 'ADMIN') {
-      await push("/");
-    }
-  } finally {
-    isLoadingStore.set(false);
-  }
-})
+// definePageMeta({
+//   layout: 'admin',
+// })
 
 </script>
 

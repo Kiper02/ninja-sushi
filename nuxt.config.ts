@@ -7,6 +7,7 @@ export default defineNuxtConfig({
     '@prisma/nuxt',
     '@nuxtjs/color-mode',
     '@pinia/nuxt',
+    'nuxt-file-storage',
     [
       '@vee-validate/nuxt',
       {
@@ -19,7 +20,8 @@ export default defineNuxtConfig({
         Inter: [400, 500, 700],
       }
     }],
-    '@nuxt/image'
+    '@nuxt/image',
+    '@nuxt/icon'
   ],
   shadcn: {
     prefix: 'Ui',
@@ -37,5 +39,10 @@ export default defineNuxtConfig({
   },
   colorMode: {
     classSuffix: ''
+  },
+  app: {
+    head: {
+      link: [{ rel: 'icon', type: 'image/svg', href: '/logo-site.svg' }]
+    }
   }
 })

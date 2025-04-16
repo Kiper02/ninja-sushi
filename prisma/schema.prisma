@@ -40,6 +40,9 @@ model Category {
   id String @id @default(ulid())
 
   name String @unique
+  icon String @db.LongText
+
+  products Product[]
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
@@ -62,10 +65,11 @@ model Product {
   isLactose    Boolean @default(true) @map("is_lactose")
   isHit        Boolean @default(false) @map("is_hit")
 
-  productType   ProductType @relation(fields: [productTypeId], references: [id])
-  productTypeId String      @map("product_type_id")
+  category   Category @relation(fields: [categoryId], references: [id])
+  categoryId String   @map("product_type_id")
 
   ingredients ProductIngredient[]
+  main_image  String
   images      ProductImage[]
 
   createdAt DateTime @default(now()) @map("created_at")
@@ -116,32 +120,4 @@ model ProductComponents {
   updatedAt DateTime @updatedAt @map("updated_at")
 
   @@map("product_components")
-}
-
-model ProductType {
-  id String @id @default(ulid())
-
-  name String
-
-  Products       Product[]
-  ProductSubType ProductSubType[]
-
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
-
-  @@map("product_types")
-}
-
-model ProductSubType {
-  id String @id @default(ulid())
-
-  name String
-
-  product       ProductType @relation(fields: [productTypeId], references: [id])
-  productTypeId String      @map("product_type_id")
-
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
-
-  @@map("product_subtypes")
 }
